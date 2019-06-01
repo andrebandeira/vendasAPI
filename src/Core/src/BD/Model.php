@@ -306,11 +306,21 @@ abstract class Model
         Model $model, array $references, bool $forcedQuery = false,
         bool $storeQuery = true
     ) {
+        foreach ($references as $column => $reference) {
+            $value = $this->$column;
+            if (is_null($value)) {
+                return [];
+            } else {
+                $model->$reference = $value;
+            }
+        }
+
         $relationshipId = Model::getRelationshipID(
             $this->table,
             $model->table,
             array_keys($references),
-            array_values($references)
+            array_values($references),
+            array_values($model->data)
         );
 
         $relationship = $this->relations[$relationshipId] ?? null;
@@ -320,14 +330,7 @@ abstract class Model
             return $relationship;
         }
 
-        foreach ($references as $column => $reference) {
-            $value = $this->$column;
-            if (is_null($value)) {
-                return [];
-            } else {
-                $model->$reference = $value;
-            }
-        }
+
 
         $resultBusca = $model->findAll();
 
@@ -345,11 +348,12 @@ abstract class Model
     }
 
     private static function getRelationshipID(
-        $sourceTable, $relationTable, $sourceFields, $relationFields
+        $sourceTable, $relationTable, $sourceFields, $relationFields, $data
     ) {
         $sourceFields = implode('|', $sourceFields);
         $relationFields = implode('|', $relationFields);
+        $data = implode('|', $data);
 
-        return  $sourceTable.'|'. $relationTable .'|'.$sourceFields.'|'.$relationFields;
+        return  $sourceTable.'|'. $relationTable .'|'.$sourceFields.'|'.$relationFields.'|'.$data;
     }
 }

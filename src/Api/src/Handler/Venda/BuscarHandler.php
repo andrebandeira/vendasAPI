@@ -37,8 +37,8 @@ class BuscarHandler extends MainHandler
                     'data' => $venda->DATA_HORA
                 ];
             } else {
-                $vendaes = Venda::getAll();
-                foreach ($vendaes as $venda) {
+                $vendas = Venda::getAll();
+                foreach ($vendas as $venda) {
                     $data[] = [
                         'id' => $venda->ID,
                         'nome' => $venda->VENDEDOR_NOME,
