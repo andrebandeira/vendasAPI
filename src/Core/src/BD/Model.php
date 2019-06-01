@@ -55,8 +55,6 @@ abstract class Model
 
     protected abstract function initialize();
 
-    public abstract static function find(array $data);
-
     public function getConnection() {
         return $this->connection;
     }

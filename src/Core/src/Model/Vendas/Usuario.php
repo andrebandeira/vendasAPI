@@ -13,10 +13,4 @@ class Usuario extends Model
         $this->PK = ['ID'];
         $this->SK = ['EMAIL'];
     }
-
-    public static function find(Array $data){
-        $usuario = new self();
-        $usuario->setData($data);
-        return $usuario->findOne();
-    }
 }

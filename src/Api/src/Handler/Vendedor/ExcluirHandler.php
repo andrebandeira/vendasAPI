@@ -8,7 +8,7 @@ use Core\BD\BD;
 use Core\Handler\MainHandler;
 use Core\Json\JsonException;
 use Core\Json\JsonMessage;
-use Core\Model\Vendas\Vendedor;
+use Core\Repository\Vendas\Vendedor;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -22,7 +22,7 @@ class ExcluirHandler extends MainHandler
 
             $id = $request->getAttribute('id');
 
-            Vendedor::deleteVendedor($id);
+            Vendedor::delete($id);
 
             BD::commit('Vendas');
 

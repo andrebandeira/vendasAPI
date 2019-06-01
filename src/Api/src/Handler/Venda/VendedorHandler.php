@@ -8,7 +8,7 @@ use Core\BD\BD;
 use Core\Handler\MainHandler;
 use Core\Json\JsonException;
 use Core\Json\JsonMessage;
-use Core\Model\Vendas\Venda;
+use Core\Repository\Vendas\Venda;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 

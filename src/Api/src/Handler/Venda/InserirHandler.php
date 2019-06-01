@@ -8,7 +8,7 @@ use Core\BD\BD;
 use Core\Handler\MainHandler;
 use Core\Json\JsonException;
 use Core\Json\JsonMessage;
-use Core\Model\Vendas\Venda;
+use Core\Repository\Vendas\Venda;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -25,7 +25,7 @@ class InserirHandler extends MainHandler
             $data = $this->getPost($request, 'data');
             $comissao = $this->getPost($request, 'comissao');
 
-            $venda = Venda::insertVenda($vendedor, $valor, $data, $comissao);
+            $venda = Venda::insert($vendedor, $valor, $data, $comissao);
 
             BD::commit('Vendas');
 

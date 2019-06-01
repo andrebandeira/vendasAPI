@@ -8,8 +8,7 @@ use Core\BD\BD;
 use Core\Handler\MainHandler;
 use Core\Json\JsonException;
 use Core\Json\JsonMessage;
-use Core\Model\Vendas\Venda;
-use Core\Model\Vendas\Vendedor;
+use Core\Repository\Vendas\Venda;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -28,7 +27,7 @@ class AtualizarHandler extends MainHandler
             $data = $this->getPost($request, 'data');
             $comissao = $this->getPost($request, 'comissao');
 
-            $venda = Venda::updateVenda($id, $vendedor, $valor, $data, $comissao);
+            $venda = Venda::update($id, $vendedor, $valor, $data, $comissao);
 
             BD::commit('Vendas');
 

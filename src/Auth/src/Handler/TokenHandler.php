@@ -9,9 +9,8 @@ use Core\Exception\MainException;
 use Core\Handler\MainHandler;
 use Core\Json\JsonException;
 use Core\Json\JsonMessage;
-use Core\Model\Vendas\Config;
-use Core\Model\Vendas\Log;
-use Core\Model\Vendas\Usuario;
+use Core\Repository\Vendas\Config;
+use Core\Repository\Vendas\Usuario;
 use Core\Util\LogUtil;
 use Firebase\JWT\JWT;
 use Psr\Http\Message\ResponseInterface;
@@ -28,7 +27,7 @@ class TokenHandler extends MainHandler
             $senha = $this->getPost($request, 'senha');
 
             if ($email && $senha) {
-                $usuario = Usuario::    find(
+                $usuario = Usuario::find(
                     [
                         'EMAIL' => $email,
                     ]
