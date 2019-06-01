@@ -1,0 +1,26 @@
+<?php
+
+declare(strict_types=1);
+
+return [
+    'dbs'  => [
+        'Middleware' => [
+            'driver' => 'Pdo',
+            'dsn'    => 'firebird:dbname=10.5.0.13/3050:/bd/Middleware.fdb;charset=utf8',
+            'username' => 'DSIN',
+            'password' => 'omega'
+        ],
+        'Dashboard' => [
+            'driver' => 'Pdo',
+            'dsn'    => 'firebird:dbname=10.5.0.13/3050:/bd/Dashboard_Master.fdb;charset=utf8',
+            'username' => 'DSIN',
+            'password' => 'omega'
+        ] ,
+        'SGIT_DSIN' => [
+            'driver' => 'Pdo',
+            'dsn'    => 'firebird:dbname=10.5.0.13/3050:/bd/SGIT.fdb;charset=win1252',
+            'username' => 'DSIN',
+            'password' => 'omega'
+        ]
+    ]
+];
