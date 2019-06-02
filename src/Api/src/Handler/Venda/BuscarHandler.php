@@ -50,8 +50,6 @@ class BuscarHandler extends MainHandler
                 $data
             );
         } catch (\Exception $ex) {
-            BD::rollback('Dashboard');
-
             return new JsonException($ex);
         }
     }

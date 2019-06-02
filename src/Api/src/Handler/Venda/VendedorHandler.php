@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Api\Handler\Venda;
 
-use Core\BD\BD;
 use Core\Handler\MainHandler;
 use Core\Json\JsonException;
 use Core\Json\JsonMessage;
@@ -18,33 +17,36 @@ class VendedorHandler extends MainHandler
     public function handle(ServerRequestInterface $request) : ResponseInterface
     {
         try {
-            BD::startTransaction('Vendas');
-
             $vendedor = $request->getAttribute('id');
+            $dataInicio = $this->getQuery($request, 'data-inicio');
+            $dataFim = $this->getQuery($request, 'data-fim');
+
+            $vendas = Venda::findByVendedor($vendedor, $dataInicio, $dataFim);
 
             $data = [];
 
-            $vendas = Venda::findByVendedor($vendedor);
-
             foreach ($vendas as $venda) {
+                $dataHora = $venda->DATA_HORA;
+
+                if ($dataHora) {
+                    $dataHora = new \DateTime($dataHora);
+                    $dataHora = $dataHora->format('d/m/Y H:i:s');
+                }
+
                 $data[] = [
                     'id' => $venda->ID,
-                    'nome' => $venda->VENDEDOR_NOME,
-                    'email' => $venda->VENDEDOR_EMAIL,
-                    'comissao' => $venda->COMISSAO,
-                    'valor' => $venda->VALOR,
-                    'data' => $venda->DATA_HORA
+                    'nome' => $venda->NOME,
+                    'email' => $venda->EMAIL,
+                    'comissao' => number_format(floatval($venda->COMISSAO),2, ',', '.'),
+                    'valor' => number_format(floatval($venda->VALOR),2, ',', '.'),
+                    'data' => $dataHora
                 ];
             }
 
-            BD::commit('Vendas');
-
-            return new JsonMessage([
+            return new JsonMessage(
                 $data
-            ]);
+            );
         } catch (\Exception $ex) {
-            BD::rollback('Dashboard');
-
             return new JsonException($ex);
         }
     }

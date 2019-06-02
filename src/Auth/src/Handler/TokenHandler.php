@@ -39,7 +39,8 @@ class TokenHandler extends MainHandler
                     if (password_verify($senha, $senhaBD)) {
                         $token = [
                             'USUARIO'  => $usuario->ID,
-                            'IP'       => LogUtil::getRealIpAddr()
+                            'IP'       => LogUtil::getRealIpAddr(),
+                            'time'     => time()
                         ];
 
                         $key = Config::keyToken();
