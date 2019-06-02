@@ -20,32 +20,25 @@ class BuscarHandler extends MainHandler
         try {
             $id = $request->getAttribute('id');
 
+            $dataInicio = $this->getQuery($request, 'data-inicio');
+            $dataFim = $this->getQuery($request, 'data-fim');
+
+            $vendedores = Vendedor::buscaVendedor($id, $dataInicio, $dataFim);
+
             $data = [];
 
-            if ($id) {
-                $vendedor = Vendedor::find([
-                    'ID' => $id
-                ]);
-
-                $data = [
+            foreach ($vendedores as $vendedor) {
+                $data[] = [
                     'id' => $vendedor->ID,
                     'nome' => $vendedor->NOME,
-                    'email' => $vendedor->EMAIL
+                    'email' => $vendedor->EMAIL,
+                    'comissao' => number_format(floatval($vendedor->COMISSAO),2, ',', '.')
                 ];
-            } else {
-                $vendedores = Vendedor::getAll();
-                foreach ($vendedores as $vendedor) {
-                    $data [] = [
-                        'id' => $vendedor->ID,
-                        'nome' => $vendedor->NOME,
-                        'email' => $vendedor->EMAIL
-                    ];
-                }
             }
 
-            return new JsonMessage([
+            return new JsonMessage(
                 $data
-            ]);
+            );
         } catch (\Exception $ex) {
             BD::rollback('Dashboard');
 
