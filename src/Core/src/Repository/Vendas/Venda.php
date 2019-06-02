@@ -77,4 +77,103 @@ class Venda extends Repository
 
         $venda->delete();
     }
+
+    public static function buscaVenda(
+        string $id = null,
+        string $dataInicio = null,
+        string $dataFim = null
+    ){
+        if ($dataInicio) {
+            $dataInicio = new \DateTime($dataInicio);
+            $dataInicio = $dataInicio->format('Y-m-d');
+        }
+
+        if ($dataFim) {
+            $dataFim = new \DateTime($dataFim);
+            $dataFim = $dataFim->format('Y-m-d');
+        }
+
+
+        $venda = self::getModel();
+
+        $qry = "select 	venda.id id,
+                        vendedor.nome nome,
+                        vendedor.email email,
+                        venda.comissao comissao,
+                        venda.valor valor,
+                        venda.data_hora data_hora
+                from venda join vendedor on vendedor.id = venda.vendedor
+                :FILTRO_VENDA 
+                :FILTRO_DATAINICIO
+                :FILTRO_DATAFIM
+                order by 1 asc";
+
+        $params = [];
+
+        if ($id) {
+            $qry = str_replace(
+                ':FILTRO_VENDA',
+                'where venda.id = :PAR_VENDA',
+                $qry
+            );
+
+            $params['PAR_VENDA'] = $id;
+        } else {
+            $qry = str_replace(
+                ':FILTRO_VENDA',
+                '',
+                $qry
+            );
+        }
+
+        if ($dataInicio) {
+            if (strpos($qry, 'where') !== false) {
+                $qry = str_replace(
+                    ':FILTRO_DATAINICIO',
+                    'and cast(venda.data_hora as date) >= :PAR_DTINICIO',
+                    $qry
+                );
+            } else {
+                $qry = str_replace(
+                    ':FILTRO_DATAINICIO',
+                    'where cast(venda.data_hora as date) >= :PAR_DTINICIO',
+                    $qry
+                );
+            }
+
+            $params['PAR_DTINICIO'] = $dataInicio;
+        } else {
+            $qry = str_replace(
+                ':FILTRO_DATAINICIO',
+                '',
+                $qry
+            );
+        }
+
+        if ($dataFim) {
+            if (strpos($qry, 'where') !== false) {
+                $qry = str_replace(
+                    ':FILTRO_DATAFIM',
+                    'and cast(venda.data_hora as date) <= :PAR_DTFIM',
+                    $qry
+                );
+            } else {
+                $qry = str_replace(
+                    ':FILTRO_DATAFIM',
+                    'where cast(venda.data_hora as date) <= :PAR_DTFIM',
+                    $qry
+                );
+            }
+
+            $params['PAR_DTFIM'] = $dataFim;
+        } else {
+            $qry = str_replace(
+                ':FILTRO_DATAFIM',
+                '',
+                $qry
+            );
+        }
+
+        return $venda->execute($qry, $params);
+    }
 }

@@ -9,6 +9,7 @@ use Core\Handler\MainHandler;
 use Core\Json\JsonException;
 use Core\Json\JsonMessage;
 use Core\Repository\Vendas\Venda;
+use Core\Repository\Vendas\Vendedor;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -20,38 +21,34 @@ class BuscarHandler extends MainHandler
         try {
             $id = $request->getAttribute('id');
 
+            $dataInicio = $this->getQuery($request, 'data-inicio');
+            $dataFim = $this->getQuery($request, 'data-fim');
+
+            $vendas = Venda::buscaVenda($id, $dataInicio, $dataFim);
+
             $data = [];
 
-            if ($id) {
-                $venda = Venda::find([
-                    'ID' => $id
-                ]);
+            foreach ($vendas as $venda) {
+                $dataHora = $venda->DATA_HORA;
 
-                $data = [
-                    'id' => $venda->ID,
-                    'nome' => $venda->VENDEDOR_NOME,
-                    'email' => $venda->VENDEDOR_EMAIL,
-                    'comissao' => $venda->COMISSAO,
-                    'valor' => $venda->VALOR,
-                    'data' => $venda->DATA_HORA
-                ];
-            } else {
-                $vendas = Venda::getAll();
-                foreach ($vendas as $venda) {
-                    $data[] = [
-                        'id' => $venda->ID,
-                        'nome' => $venda->VENDEDOR_NOME,
-                        'email' => $venda->VENDEDOR_EMAIL,
-                        'comissao' => $venda->COMISSAO,
-                        'valor' => $venda->VALOR,
-                        'data' => $venda->DATA_HORA
-                    ];
+                if ($dataHora) {
+                    $dataHora = new \DateTime($dataHora);
+                    $dataHora = $dataHora->format('d/m/Y H:i:s');
                 }
+
+                $data[] = [
+                    'id' => $venda->ID,
+                    'nome' => $venda->NOME,
+                    'email' => $venda->EMAIL,
+                    'comissao' => number_format(floatval($venda->COMISSAO),2, ',', '.'),
+                    'valor' => number_format(floatval($venda->VALOR),2, ',', '.'),
+                    'data' => $dataHora
+                ];
             }
 
-            return new JsonMessage([
+            return new JsonMessage(
                 $data
-            ]);
+            );
         } catch (\Exception $ex) {
             BD::rollback('Dashboard');
 
