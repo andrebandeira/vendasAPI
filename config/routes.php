@@ -54,4 +54,9 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->put('/api/email', \Api\Handler\Notificacao\AtualizarEmailHandler::class);
 
 
+    $app->get('/api/dashboard/valorvendedor', \Api\Handler\Dashboard\ValorVendedor::class);
+    $app->get('/api/dashboard/valordia', \Api\Handler\Dashboard\ValorDia::class);
+    $app->get('/api/dashboard/comissaovendedor', \Api\Handler\Dashboard\ComissaoVendedor::class);
+    $app->get('/api/dashboard/comissaodia', \Api\Handler\Dashboard\ComissaoDia::class);
+
 };

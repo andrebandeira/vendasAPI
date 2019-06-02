@@ -285,4 +285,52 @@ class Venda extends Repository
 
         return $venda->execute($qry, $params);
     }
+
+    public static function valorVendedor(){
+        $venda = self::getModel();
+
+        $qry = "select 	vendedor.email email,
+                        sum(venda.valor) valor
+                from venda join vendedor on vendedor.id = venda.vendedor
+                group by 1
+                order by 2 desc";
+
+        return $venda->execute($qry);
+    }
+
+    public static function valorDia(){
+        $venda = self::getModel();
+
+        $qry = "select 	cast(venda.data_hora as date) dia,
+                        sum(venda.valor) valor
+                from venda join vendedor on vendedor.id = venda.vendedor
+                group by 1
+                order by 1 asc";
+
+        return $venda->execute($qry);
+    }
+
+    public static function comissaoVendedor(){
+        $venda = self::getModel();
+
+        $qry = "select 	vendedor.email email,
+                        sum(venda.comissao) comissao
+                from venda join vendedor on vendedor.id = venda.vendedor
+                group by 1
+                order by 2 desc";
+
+        return $venda->execute($qry);
+    }
+
+    public static function comissaoDia(){
+        $venda = self::getModel();
+
+        $qry = "select 	cast(venda.data_hora as date) dia,
+                        sum(venda.comissao) comissao
+                from venda join vendedor on vendedor.id = venda.vendedor
+                group by 1
+                order by 1 asc";
+
+        return $venda->execute($qry);
+    }
 }
