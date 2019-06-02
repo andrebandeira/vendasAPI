@@ -19,6 +19,14 @@ class Venda extends Repository
             $data = $date->format('Y-m-d H:i:s');
         }
 
+        if ($valor) {
+            if (!is_numeric($valor)) {
+                $valor = str_replace(".", "", $valor);
+                $valor = str_replace(",", ".", $valor);
+            }
+            $valor = number_format($valor, 2, ".", "");
+        }
+
         if (!$comissao) {
             $comissao = round($valor * 0.085, 2);
         }
@@ -45,6 +53,14 @@ class Venda extends Repository
         if (!$data) {
             $date = new \DateTime();
             $data = $date->format('Y-m-d H:i:s');
+        }
+
+        if ($valor) {
+            if (!is_numeric($valor)) {
+                $valor = str_replace(".", "", $valor);
+                $valor = str_replace(",", ".", $valor);
+            }
+            $valor = number_format($valor, 2, ".", "");
         }
 
         if (!$comissao) {
