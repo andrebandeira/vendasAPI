@@ -24,9 +24,8 @@ class AtualizarHandler extends MainHandler
 
             $nome = $this->getPost($request, 'nome');
             $email = $this->getPost($request, 'email');
-            $senha = $this->getPost($request, 'senha');
 
-            $vendedor = Vendedor::update($id, $nome, $email, $senha);
+            $vendedor = Vendedor::update($id, $nome, $email);
 
             BD::commit('Vendas');
 

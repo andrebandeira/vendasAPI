@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Api\Handler\Venda\InserirHandler;
 use Psr\Container\ContainerInterface;
 use Zend\Expressive\Application;
 use Zend\Expressive\MiddlewareFactory;
@@ -47,4 +48,10 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->get('/api/venda/vendedor/{id}', \Api\Handler\Venda\VendedorHandler::class);
 
     $app->post('/token', Auth\Handler\TokenHandler::class);
+
+    $app->post('/email', \Api\Handler\Notificacao\EmailHandler::class);
+    $app->get('/api/email', \Api\Handler\Notificacao\BuscarEmailHandler::class);
+    $app->put('/api/email', \Api\Handler\Notificacao\AtualizarEmailHandler::class);
+
+
 };
