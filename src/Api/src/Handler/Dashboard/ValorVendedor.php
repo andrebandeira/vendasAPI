@@ -27,7 +27,7 @@ class ValorVendedor extends MainHandler
 
             foreach ($vendas as $venda) {
                 $data[] = [
-                    'email' => $venda->EMAIL,
+                    'referencia' => $venda->EMAIL,
                     'valor' => $venda->VALOR
                 ];
             }

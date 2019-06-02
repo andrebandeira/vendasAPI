@@ -27,8 +27,8 @@ class ComissaoDia extends MainHandler
 
             foreach ($vendas as $venda) {
                 $data[] = [
-                    'dia' => $venda->DIA,
-                    'comissao' => $venda->COMISSAO
+                    'referencia' => $venda->DIA,
+                    'valor' => $venda->COMISSAO
                 ];
             }
 

@@ -27,7 +27,7 @@ class ValorDia extends MainHandler
 
             foreach ($vendas as $venda) {
                 $data[] = [
-                    'dia' => $venda->DIA,
+                    'referencia' => $venda->DIA,
                     'valor' => $venda->VALOR
                 ];
             }
