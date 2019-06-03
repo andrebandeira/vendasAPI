@@ -26,8 +26,15 @@ class ComissaoDia extends MainHandler
             $data = [];
 
             foreach ($vendas as $venda) {
+                $dia = $venda->DIA;
+
+                if ($dia) {
+                    $dia = new \DateTime($dia);
+                    $dia = $dia->format('d/m/Y');
+                }
+
                 $data[] = [
-                    'referencia' => $venda->DIA,
+                    'referencia' => $dia,
                     'valor' => $venda->COMISSAO
                 ];
             }
